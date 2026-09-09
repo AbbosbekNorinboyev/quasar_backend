@@ -34,7 +34,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain configure(HttpSecurity httpSecurity) {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
@@ -45,7 +45,9 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/webjars/**",
-                                "/api/auths/**",
+                                "/api/users/register",
+                                "/api/users/login",
+                                "/api/roles/create",
                                 "/actuator/**"
                         ).permitAll()
                         .anyRequest().authenticated())

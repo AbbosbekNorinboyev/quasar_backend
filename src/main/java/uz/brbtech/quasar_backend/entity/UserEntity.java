@@ -29,9 +29,6 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "keycloak_user_id", unique = true, nullable = false)
-    private String keycloakUserId;
-
     @Column(name = "full_name")
     private String fullName;
 
