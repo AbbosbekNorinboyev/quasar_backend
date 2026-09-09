@@ -5,3 +5,53 @@ server:
 spring:
   application:
     name: quasar_backend
+
+  # PostgreSQL config
+  datasource:
+    url: jdbc:postgresql://localhost:5432/project?currentSchema=quasar_backend
+    username: postgres
+    password: 2210
+    driver-class-name: org.postgresql.Driver
+
+    hikari:
+      maximum-pool-size: 30             # maksimal ulanishlar soni
+      leak-detection-threshold: 60000
+      # HikariCP specific settings
+      minimum-idle: 5                   # bo‘sh turgan minimal ulanishlar
+      connection-timeout: 30000         # 30s ichida ulanish bo‘lmasa xato beradi
+      idle-timeout: 60000               # ulanish bo‘sh tursa 30s dan keyin yopiladi
+      max-lifetime: 1800000             # ulanish 30 daqiqadan keyin yangilanadi
+
+  # JPA (Hibernate) config
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# Swagger config
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    tags-sorter: alpha                # Tag’larni alifbo tartibida ko‘rsatadi
+    doc-expansion: none               # Swagger’da barcha bo‘limlar yopiq holda chiqadi (collapsed)
+    try-it-out-enabled: true          # "Try it out" tugmasini o‘chiradi (foydalanuvchi swagger orqali API chaqira olmaydi)
+    default-model-expand-depth: 10    # Model (schema) larni nechta chuqurlikda expand qilishini belgilaydi
+    operations-sorter: method         # metodlarni tartib bilan ko‘rsatadi (GET, POST, PUT...)
+    display-request-duration: true    # har bir request qancha vaqt olganini ko‘rsatadi
+
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
