@@ -14,7 +14,9 @@ public class MvcCorsGlobalConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("*"));
+        corsConfiguration.setAllowedOrigins(
+                List.of("http://localhost:5174")
+        );
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         corsConfiguration.setAllowCredentials(true);

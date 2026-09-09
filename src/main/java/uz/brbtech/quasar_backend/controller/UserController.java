@@ -1,10 +1,13 @@
 package uz.brbtech.quasar_backend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import uz.brbtech.quasar_backend.dto.request.LoginRequest;
 import uz.brbtech.quasar_backend.dto.request.RegisterRequest;
 import uz.brbtech.quasar_backend.dto.response.Response;
+import uz.brbtech.quasar_backend.dto.search.RoleSearchRequest;
 import uz.brbtech.quasar_backend.service.UserService;
 
 @RestController

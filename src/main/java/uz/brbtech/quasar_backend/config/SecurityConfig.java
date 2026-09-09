@@ -37,7 +37,8 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity httpSecurity) {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(cors -> {
+                })
                 .authorizeHttpRequests(authorization -> authorization
                         .requestMatchers(
                                 "/v3/api-docs/**",
@@ -47,7 +48,9 @@ public class SecurityConfig {
                                 "/webjars/**",
                                 "/api/users/register",
                                 "/api/users/login",
+                                "/api/users/getAll",
                                 "/api/roles/create",
+                                "/api/roles/getAll",
                                 "/actuator/**"
                         ).permitAll()
                         .anyRequest().authenticated())
