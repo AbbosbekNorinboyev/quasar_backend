@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
                 ))
                 .toList();
 
-        return Response.success(userResponses);
+        return Response.success(userResponses, page.getTotalElements(), page.getTotalPages());
     }
 
     @Override
