@@ -19,4 +19,6 @@ public interface UserService {
     Response<?> me(UserEntity user);
 
     Response<?> createUser(UserCreateRequest request);
+
+    Response<?> updateUser(UserCreateRequest request, Long id);
 }

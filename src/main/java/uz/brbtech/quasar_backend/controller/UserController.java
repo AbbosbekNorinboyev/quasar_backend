@@ -48,4 +48,10 @@ public class UserController {
     public Response<?> createUser(@RequestBody UserCreateRequest request) {
         return userService.createUser(request);
     }
+
+    @PutMapping("/update/{userId}")
+    public Response<?> updateUser(@RequestBody UserCreateRequest request,
+                                  @PathVariable Long userId) {
+        return userService.updateUser(request, userId);
+    }
 }

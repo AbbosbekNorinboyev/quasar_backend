@@ -174,4 +174,27 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return Response.success("User created successfully");
     }
+
+    @Override
+    public Response<?> updateUser(UserCreateRequest request, Long id) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> CustomException.notFound("User not found"));
+
+        userRepository.findByUsername(request.getUsername())
+                .filter(existingUser -> !existingUser.getId().equals(id))
+                .ifPresent(existingUser -> {
+                    throw CustomException.badRequest("Username already exists");
+                });
+
+        user.setFullName(request.getFullName());
+        user.setPhoneNumber(request.getPhoneNumber());
+        user.setEmail(request.getEmail());
+        user.setUsername(request.getUsername());
+        user.setPassword(hashPassword(request.getPassword()));
+        user.setBirthDate(request.getBirthDate());
+        user.setUpdatedAt(LocalDateTime.now());
+
+        userRepository.save(user);
+        return Response.success("User updated successfully");
+    }
 }
