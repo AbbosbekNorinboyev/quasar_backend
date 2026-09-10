@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.brbtech.quasar_backend.config.CustomUserDetailsService;
 import uz.brbtech.quasar_backend.dto.request.LoginRequest;
 import uz.brbtech.quasar_backend.dto.request.RegisterRequest;
@@ -117,5 +118,32 @@ public class UserServiceImpl implements UserService {
                 .toList();
 
         return Response.success(userResponses);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Response<?> me(UserEntity user) {
+        if (user == null) {
+            throw CustomException.badRequest("USER IS NULL");
+        }
+        UserResponse userResponse = new UserResponse(
+                user.getId(),
+                user.getFullName(),
+                user.getPhoneNumber(),
+                user.getEmail(),
+                user.getUsername(),
+                user.getBirthDate(),
+                user.getRoles(),
+                user.getStatus(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
+        return Response.builder()
+                .code(HttpStatus.OK.value())
+                .status(HttpStatus.OK)
+                .message("AuthUser successfully found")
+                .success(true)
+                .data(userResponse)
+                .build();
     }
 }

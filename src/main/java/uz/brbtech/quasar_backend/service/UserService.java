@@ -5,6 +5,7 @@ import uz.brbtech.quasar_backend.dto.request.LoginRequest;
 import uz.brbtech.quasar_backend.dto.request.RegisterRequest;
 import uz.brbtech.quasar_backend.dto.response.Response;
 import uz.brbtech.quasar_backend.dto.search.UserSearchRequest;
+import uz.brbtech.quasar_backend.entity.UserEntity;
 
 public interface UserService {
 
@@ -13,4 +14,6 @@ public interface UserService {
     Response<?> login(LoginRequest loginRequest);
 
     Response<?> getAllUser(Pageable pageable, UserSearchRequest request);
+
+    Response<?> me(UserEntity user);
 }

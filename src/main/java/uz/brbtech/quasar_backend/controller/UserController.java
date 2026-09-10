@@ -8,7 +8,9 @@ import uz.brbtech.quasar_backend.dto.request.LoginRequest;
 import uz.brbtech.quasar_backend.dto.request.RegisterRequest;
 import uz.brbtech.quasar_backend.dto.response.Response;
 import uz.brbtech.quasar_backend.dto.search.UserSearchRequest;
+import uz.brbtech.quasar_backend.entity.UserEntity;
 import uz.brbtech.quasar_backend.service.UserService;
+import uz.brbtech.quasar_backend.util.validator.CurrentUser;
 
 @RestController
 @RequestMapping("/api/users")
@@ -34,5 +36,10 @@ public class UserController {
                 PageRequest.of(page, size, Sort.Direction.ASC, "id"),
                 request
         );
+    }
+
+    @GetMapping("/me")
+    public Response<?> me(@CurrentUser UserEntity user) {
+        return userService.me(user);
     }
 }
