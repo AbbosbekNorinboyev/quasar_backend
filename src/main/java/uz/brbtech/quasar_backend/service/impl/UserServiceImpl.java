@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.brbtech.quasar_backend.config.CustomUserDetailsService;
 import uz.brbtech.quasar_backend.dto.request.LoginRequest;
 import uz.brbtech.quasar_backend.dto.request.RegisterRequest;
+import uz.brbtech.quasar_backend.dto.request.UserCreateRequest;
 import uz.brbtech.quasar_backend.dto.response.Response;
 import uz.brbtech.quasar_backend.dto.response.UserResponse;
 import uz.brbtech.quasar_backend.dto.search.UserSearchRequest;
@@ -145,5 +146,32 @@ public class UserServiceImpl implements UserService {
                 .success(true)
                 .data(userResponse)
                 .build();
+    }
+
+    @Override
+    public Response<?> createUser(UserCreateRequest request) {
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw CustomException.badRequest("Username already exists");
+        }
+
+        RoleEntity roleUser = roleRepository.findByName("USER")
+                .orElseThrow(() -> CustomException.notFound("Role not found"));
+
+        LocalDateTime now = LocalDateTime.now();
+        UserEntity user = UserEntity.builder()
+                .fullName(request.getFullName())
+                .phoneNumber(request.getPhoneNumber())
+                .email(request.getEmail())
+                .username(request.getUsername())
+                .password(hashPassword(request.getPassword()))
+                .birthDate(request.getBirthDate())
+                .roles(new HashSet<>(Set.of(roleUser)))
+                .status(Status.ACTIVE)
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
+
+        userRepository.save(user);
+        return Response.success("User created successfully");
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import uz.brbtech.quasar_backend.dto.request.LoginRequest;
 import uz.brbtech.quasar_backend.dto.request.RegisterRequest;
+import uz.brbtech.quasar_backend.dto.request.UserCreateRequest;
 import uz.brbtech.quasar_backend.dto.response.Response;
 import uz.brbtech.quasar_backend.dto.search.UserSearchRequest;
 import uz.brbtech.quasar_backend.entity.UserEntity;
@@ -41,5 +42,10 @@ public class UserController {
     @GetMapping("/me")
     public Response<?> me(@CurrentUser UserEntity user) {
         return userService.me(user);
+    }
+
+    @PostMapping("/create")
+    public Response<?> createUser(@RequestBody UserCreateRequest request) {
+        return userService.createUser(request);
     }
 }
