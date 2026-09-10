@@ -197,4 +197,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return Response.success("User updated successfully");
     }
+
+    @Override
+    public Response<?> deleteUser(Long id) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> CustomException.notFound("User not found"));
+
+        user.setStatus(Status.DELETED);
+        userRepository.save(user);
+
+        return Response.success("User deleted successfully");
+    }
 }

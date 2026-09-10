@@ -21,4 +21,6 @@ public interface UserService {
     Response<?> createUser(UserCreateRequest request);
 
     Response<?> updateUser(UserCreateRequest request, Long id);
+
+    Response<?> deleteUser(Long id);
 }
