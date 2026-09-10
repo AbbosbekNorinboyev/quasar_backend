@@ -1,6 +1,9 @@
 package uz.brbtech.quasar_backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,6 +13,8 @@ import uz.brbtech.quasar_backend.config.CustomUserDetailsService;
 import uz.brbtech.quasar_backend.dto.request.LoginRequest;
 import uz.brbtech.quasar_backend.dto.request.RegisterRequest;
 import uz.brbtech.quasar_backend.dto.response.Response;
+import uz.brbtech.quasar_backend.dto.response.UserResponse;
+import uz.brbtech.quasar_backend.dto.search.UserSearchRequest;
 import uz.brbtech.quasar_backend.entity.RoleEntity;
 import uz.brbtech.quasar_backend.entity.UserEntity;
 import uz.brbtech.quasar_backend.enums.Status;
@@ -17,10 +22,12 @@ import uz.brbtech.quasar_backend.exception.CustomException;
 import uz.brbtech.quasar_backend.repository.RoleRepository;
 import uz.brbtech.quasar_backend.repository.UserRepository;
 import uz.brbtech.quasar_backend.service.UserService;
+import uz.brbtech.quasar_backend.specification.UserSpecification;
 import uz.brbtech.quasar_backend.util.JWTUtil;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -84,5 +91,31 @@ public class UserServiceImpl implements UserService {
                 .success(true)
                 .message(jwtToken)
                 .build();
+    }
+
+    @Override
+    public Response<?> getAllUser(Pageable pageable, UserSearchRequest request) {
+        Specification<UserEntity> specification = UserSpecification.search(request);
+
+        Page<UserEntity> page = userRepository.findAll(specification, pageable);
+
+        List<UserEntity> users = page.getContent();
+
+        List<UserResponse> userResponses = users.stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getFullName(),
+                        user.getPhoneNumber(),
+                        user.getEmail(),
+                        user.getUsername(),
+                        user.getBirthDate(),
+                        user.getRoles(),
+                        user.getStatus(),
+                        user.getCreatedAt(),
+                        user.getUpdatedAt()
+                ))
+                .toList();
+
+        return Response.success(userResponses);
     }
 }

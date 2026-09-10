@@ -1,12 +1,16 @@
 package uz.brbtech.quasar_backend.service;
 
+import org.springframework.data.domain.Pageable;
 import uz.brbtech.quasar_backend.dto.request.LoginRequest;
 import uz.brbtech.quasar_backend.dto.request.RegisterRequest;
 import uz.brbtech.quasar_backend.dto.response.Response;
+import uz.brbtech.quasar_backend.dto.search.UserSearchRequest;
 
 public interface UserService {
 
     Response<?> register(RegisterRequest registerRequest);
 
     Response<?> login(LoginRequest loginRequest);
+
+    Response<?> getAllUser(Pageable pageable, UserSearchRequest request);
 }
